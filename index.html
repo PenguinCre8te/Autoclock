@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #timer {
+            font-size: 200px;
+            color: #333;
+        }
+        .flashing {
+            animation: flash 0.5s alternate infinite;
+        }
+        @keyframes flash {
+            from { background-color: red; }
+            to { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">02:00</div>
+
+    <script>
+        const timerElement = document.getElementById('timer');
+        let countdown;
+        let time = 60;
+
+        function startTimer() {
+            countdown = setInterval(() => {
+                time--;
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (time <= 0) {
+                    clearInterval(countdown);
+                    timerElement.textContent = "夠鐘喇"
+                    timerElement.classList.add('flashing');
+                    setTimeout(() => {
+                        timerElement.classList.remove('flashing');
+                        time = 60; // Reset the time
+                        startTimer(); // Start the timer again
+                    }, 5000);
+                }
+            }, 1000);
+        }
+
+        startTimer();
+    </script>
+</body>
+</html>
