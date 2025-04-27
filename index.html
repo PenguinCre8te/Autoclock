@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer</title>
+    <title> 發球機自動計時器 </title>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -14,9 +15,12 @@
             font-family: Arial, sans-serif;
         }
         #timer {
-            font-size: 200px;
-            color: #333;
-        }
+                font-size: 40vw; /* Adjust font size relative to viewport height */
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            } 
         .flashing {
             animation: flash 0.5s alternate infinite;
         }
@@ -27,12 +31,21 @@
     </style>
 </head>
 <body>
-    <div id="timer">02:00</div>
+    <input type="number" id="timeInput" placeholder="時長">
+    <button onclick="setTime()">確定/重設</button>
+    <div id="timer">00:00</div>
 
     <script>
         const timerElement = document.getElementById('timer');
+        const timeInput = document.getElementById('timeInput');
         let countdown;
         let time = 60;
+
+        function setTime() {
+            clearInterval(countdown); // Stop any running timer
+            time = parseInt(timeInput.value) || 60;
+            startTimer();
+        }
 
         function startTimer() {
             countdown = setInterval(() => {
@@ -42,18 +55,14 @@
                 timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 if (time <= 0) {
                     clearInterval(countdown);
-                    timerElement.textContent = "夠鐘喇"
+                    timerElement.textContent = "夠鐘喇";
                     timerElement.classList.add('flashing');
                     setTimeout(() => {
                         timerElement.classList.remove('flashing');
-                        time = 60; // Reset the time
-                        startTimer(); // Start the timer again
                     }, 5000);
                 }
             }, 1000);
         }
-
-        startTimer();
     </script>
 </body>
 </html>
